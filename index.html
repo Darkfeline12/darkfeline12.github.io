@@ -34,6 +34,7 @@
       border-bottom: 1px solid #e2e8f0;
       position: sticky;
       top: 0;
+      z-index: 10;
     }
     .tabs {
       max-width: 1100px;
@@ -64,7 +65,7 @@
     /* Content */
     main {
       max-width: 1100px;
-      margin: 40px auto;
+      margin: 35px auto;
       padding: 0 24px;
     }
     .page { display: none; }
@@ -72,9 +73,77 @@
     .page h2 {
       font-size: 24px;
       color: #0a0a0a;
-      padding-bottom: 10px;
+      padding-bottom: 8px;
       border-bottom: 2px solid #0066cc;
       display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    /* Table & Search Controls */
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .search-box {
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 280px;
+      outline: none;
+    }
+    .search-box:focus { border-color: #0066cc; }
+    .filter-btn {
+      padding: 8px 14px;
+      border: 1px solid #cbd5e1;
+      background: #f8fafc;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: #0066cc;
+      color: #ffffff;
+      border-color: #0066cc;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      text-align: left;
+    }
+    th {
+      background: #0a0a0a;
+      color: #ffffff;
+      padding: 12px 14px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    th:hover { background: #1e293b; }
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      white-space: nowrap;
+    }
+    tr:nth-child(even) { background: #f8fafc; }
+    tr:hover { background: #eff6ff; }
+    .tag {
+      background: #dbeafe;
+      color: #1e40af;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
     }
   </style>
 </head>
@@ -101,7 +170,128 @@
 
   <main>
     <div id="home" class="page active"><h2>Home</h2></div>
-    <div id="body-mass" class="page"><h2>Body Mass</h2></div>
+
+    <!-- BODY MASS TAB -->
+    <div id="body-mass" class="page">
+      <h2>Body Mass</h2>
+      
+      <div class="controls">
+        <input type="text" id="massSearch" class="search-box" onkeyup="filterMass()" placeholder="Search species or region...">
+        <button class="filter-btn active" onclick="filterGenus('ALL', this)">All</button>
+        <button class="filter-btn" onclick="filterGenus('Panthera', this)">Panthera</button>
+        <button class="filter-btn" onclick="filterGenus('Felis', this)">Felis</button>
+        <button class="filter-btn" onclick="filterGenus('Other', this)">Other</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="massTable">
+          <thead>
+            <tr>
+              <th onclick="sortTable(0)">Species ↕</th>
+              <th onclick="sortTable(1)">Genus ↕</th>
+              <th onclick="sortTable(2)">Region ↕</th>
+              <th onclick="sortTable(3)">Male Mean (kg) ↕</th>
+              <th onclick="sortTable(4)">Female Mean (kg) ↕</th>
+              <th onclick="sortTable(5)">Verified Max (kg) ↕</th>
+              <th>Sample (n) / Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Bengal Tiger</strong> (<em>P. t. tigris</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Nepal / North India</td>
+              <td>215.0</td>
+              <td>138.0</td>
+              <td>261.0 (Wild)</td>
+              <td>n=28 | Sunquist / Smith</td>
+            </tr>
+            <tr>
+              <td><strong>Amur Tiger</strong> (<em>P. t. altaica</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Russian Far East</td>
+              <td>190.0</td>
+              <td>118.0</td>
+              <td>254.0 (Modern Wild)</td>
+              <td>n=35 | Slaght et al. (2005)</td>
+            </tr>
+            <tr>
+              <td><strong>African Lion</strong> (<em>P. leo</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Southern Africa</td>
+              <td>187.5</td>
+              <td>124.0</td>
+              <td>272.0 (Transvaal)</td>
+              <td>n=64 | Smuts et al. (1980)</td>
+            </tr>
+            <tr>
+              <td><strong>Asiatic Lion</strong> (<em>P. l. persica</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Gir Forest, India</td>
+              <td>160.0</td>
+              <td>115.0</td>
+              <td>190.0</td>
+              <td>n=18 | Chellam / Jhala</td>
+            </tr>
+            <tr>
+              <td><strong>Jaguar</strong> (<em>P. onca</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Pantanal / Llanos</td>
+              <td>102.0</td>
+              <td>76.0</td>
+              <td>158.0</td>
+              <td>n=42 | Seymour (1989)</td>
+            </tr>
+            <tr>
+              <td><strong>African Leopard</strong> (<em>P. pardus</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Southern Africa</td>
+              <td>60.0</td>
+              <td>37.0</td>
+              <td>96.0</td>
+              <td>n=55 | Bailey (1993)</td>
+            </tr>
+            <tr>
+              <td><strong>Cougar</strong> (<em>Puma concolor</em>)</td>
+              <td><span class="tag">Other</span></td>
+              <td>North America / Patagonia</td>
+              <td>68.0</td>
+              <td>44.0</td>
+              <td>105.2</td>
+              <td>n=49 | Logan & Sweanor</td>
+            </tr>
+            <tr>
+              <td><strong>Snow Leopard</strong> (<em>P. uncia</em>)</td>
+              <td><span class="tag">Panthera</span></td>
+              <td>Central Asia</td>
+              <td>45.0</td>
+              <td>35.0</td>
+              <td>55.0</td>
+              <td>n=21 | McCarthy et al.</td>
+            </tr>
+            <tr>
+              <td><strong>Jungle Cat</strong> (<em>Felis chaus</em>)</td>
+              <td><span class="tag">Felis</span></td>
+              <td>South Asia</td>
+              <td>8.2</td>
+              <td>5.4</td>
+              <td>16.0</td>
+              <td>n=30 | Hunter (2015)</td>
+            </tr>
+            <tr>
+              <td><strong>European Wildcat</strong> (<em>Felis silvestris</em>)</td>
+              <td><span class="tag">Felis</span></td>
+              <td>Europe</td>
+              <td>5.1</td>
+              <td>3.8</td>
+              <td>8.0</td>
+              <td>n=44 | Kitchener</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <div id="robusticity" class="page"><h2>Robusticity</h2></div>
     <div id="strength" class="page"><h2>Strength</h2></div>
     <div id="comparison" class="page"><h2>Comparison</h2></div>
@@ -113,6 +303,8 @@
   </main>
 
   <script>
+    let activeGenus = 'ALL';
+
     function showTab(id, btn) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -121,15 +313,3 @@
       history.replaceState(null, null, '#' + id);
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.replace('#', '');
-      const target = document.getElementById(hash);
-      if (target) {
-        const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(hash));
-        showTab(hash, btn);
-      }
-    });
-  </script>
-
-</body>
-</html>
