@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Darkfeline12 | Felid Morphology & Strength Data Hub</title>
+  <meta name="description" content="Verified morphometrics, weight, size, skull dimensions, and bite force data for Panthera and Felis species.">
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f1115; color: #e6edf3; margin: 0; padding: 20px; line-height: 1.6; }
+    .container { max-width: 1000px; margin: auto; }
+    header { border-bottom: 1px solid #30363d; padding-bottom: 20px; margin-bottom: 25px; }
+    h1 { color: #f0883e; margin: 0 0 8px 0; }
+    .subtitle { color: #8b949e; margin: 0; }
+    input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #30363d; background: #161b22; color: #fff; font-size: 16px; box-sizing: border-box; }
+    table { width: 100%; border-collapse: collapse; background: #161b22; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 14px; text-align: left; border-bottom: 1px solid #30363d; }
+    th { background: #21262d; color: #f0883e; cursor: pointer; }
+    tr:hover { background: #1f242c; }
+    .footer { margin-top: 40px; font-size: 14px; color: #8b949e; border-top: 1px solid #30363d; padding-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Darkfeline12 — Felid Morphology & Strength Database</h1>
+      <p class="subtitle">Compiled morphometrics, weights, skull sizes, and biomechanics across <em>Panthera</em> & <em>Felis</em>.</p>
+    </header>
+
+    <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search species, genus, or metric (e.g., Tiger, Lion, Felis)...">
+
+    <table id="catTable">
+      <thead>
+        <tr>
+          <th>Common Name</th>
+          <th>Scientific Name</th>
+          <th>Avg Male Weight</th>
+          <th>Max Verified Weight</th>
+          <th>Bite Force (Est.)</th>
+          <th>Primary Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bengal Tiger</td>
+          <td><em>Panthera tigris tigris</em></td>
+          <td>200–220 kg</td>
+          <td>261+ kg (wild verified)</td>
+          <td>~1,050 PSI</td>
+          <td>Mazák (1981) / Sunquist</td>
+        </tr>
+        <tr>
+          <td>African Lion</td>
+          <td><em>Panthera leo</em></td>
+          <td>180–200 kg</td>
+          <td>272 kg (wild record)</td>
+          <td>~650–1,000 PSI</td>
+          <td>Smuts et al. / Wroe et al.</td>
+        </tr>
+        <tr>
+          <td>Jaguar</td>
+          <td><em>Panthera onca</em></td>
+          <td>95–110 kg</td>
+          <td>158 kg</td>
+          <td>~1,100–1,500 PSI</td>
+          <td>Christiansen & Wroe (2007)</td>
+        </tr>
+        <tr>
+          <td>Jungle Cat</td>
+          <td><em>Felis chaus</em></td>
+          <td>6–12 kg</td>
+          <td>16 kg</td>
+          <td>~180 PSI</td>
+          <td>Pocock / Hunter (2015)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <p>Curated by <strong>Darkfeline12</strong> • Always cite peer-reviewed field logs and museum records.</p>
+    </div>
+  </div>
+
+  <script>
+    function filterTable() {
+      const filter = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelector("#catTable tbody").rows;
+      for (let row of rows) {
+        row.style.display = row.innerText.toLowerCase().includes(filter) ? "" : "none";
+      }
+    }
+  </script>
+</body>
+</html>
